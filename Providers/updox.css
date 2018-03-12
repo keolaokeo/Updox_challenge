@@ -1,0 +1,38 @@
+.form{
+    width:200px;
+    height:400px;
+    background:white;
+    float: left;
+    margin:1em;
+}
+.form2{
+  width:390px;
+  height:400px;
+  background:white;
+  float: left;
+  margin:1em;
+}
+.tablerow{
+  float: left;
+}
+.tablerowbottom{
+  float: block;
+}
+tr {background-color:rgb(255, 238, 238);}
+tr:nth-child(odd) {background-color:rgba(255, 238, 238, 0.021);}
+
+table {
+  border-spacing: 10px;
+  border-collapse: collapse;
+}
+
+tbody {
+  height: 200px;
+  width: 390px;
+  display: inline-block;
+  overflow-y: auto;
+}
+
+alignright {
+  float: right;
+}

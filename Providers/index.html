@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="Updox">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Updox</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="updox.css" media="screen" />
+  </head>
+  <style>
+    body {
+        background-color: lightgray;
+    }
+  </style>
+  <body>
+      <div ng-controller="providerController">
+        <h1>Provider Directory</h1>    
+        <div class="form">     
+        <form name="frm" ng-submit="addProvider()">
+            <label><strong>Create Provider</strong></label><br><br>
+                <label id="name">Last Name:</label><br>
+                <input type="text" name="last_name" ng-model="last_name" required /><br>
+                <label id="name">First Name:</label><br>
+                <input type="text" name="first_name" ng-model="first_name" required /><br>
+                <label id="name">Email Address:</label><br>
+                <input type="text" name="email_address" ng-model="email_address" required /><br>
+                <label id="name">Specialty:</label><br>
+                <input type="text" name="specialty" ng-model="specialty"/><br>
+                <label id="name">Practive Name:</label><br>
+                <input type="text" name="practice_name" ng-model="practice_name" /><br><br>
+                <button ng-disabled="frm.$invalid">Submit</button>
+        </form>
+        </div>
+        <div class="form2"  >
+            <form name="form2" >
+                <div >
+                    <label style="text-align: left;"><strong>Provider List</strong></label>  
+                    
+                    <select style="float: right" name="singleSelect" ng-model="selectedItem" ng-change="selectedItemChanged()" >
+                            <option value="">-- SortBy --</option>
+                            <option value="last_name">LastName</option>
+                            <option value="first_name">FirstName</option>
+                            <option value="specialty">Specialty</option>
+                            <option value="practice_name">PracticeName</option>
+                            <option value="email_address">EmailAddress</option>   
+                    </select>
+                </div>
+                
+                <br>
+                <table  >
+                    <tbody class="scroll" >
+                        <tr ng-repeat="(key, value) in providers| orderBy:orderByValue:sortOrder| filter:searchFor">
+                            <td rowspan="1">
+                                    <div class="tablerow" >
+                                        <input type="checkbox" ng-model="value.checked"/> 
+                                    </div>
+                                </td>
+                            <td>
+                                <span>
+                                    <div class="tablerow">
+                                            <strong>{{value.last_name}},{{value.first_name}}</strong>
+                                    </div>
+                                    <div class="tablerowbottom">
+                                        {{value.email_address}}
+                                    </div>
+                                </span>
+                            </td>
+                            <td>
+                                <span>
+                                    <div style="text-align: right;" >
+                                        {{value.specialty}}
+                                    </div>
+                                    <div style="text-align: right;">
+                                        {{value.practice_name}}
+                                    </div>
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                    
+                            
+                </table><br>
+                <div>
+                        <i class="fa fa-search"></i></div>
+                        <input type="text" placeholder="Search Providers" ng-model="searchFor">
+
+                
+                <button style="float: right;" ng-click="remove()">Remove</button>
+            </div>
+            </form>
+        </div>
+        
+    </div>
+    
+    <script>
+    angular.module('Updox',[]).
+    controller('providerController', ['$scope',function($scope){
+
+        $scope.orderByValue = "";
+        $scope.sortOrder=false;
+       
+        $scope.providers = [
+            {'checked': false, 'last_name': 'Harris', 'first_name': 'Mike', 'email_address': 'mharris@updox.com', 'specialty': 'Pediatrics', 'practice_name': 'Harris Pediatrics'},
+            {'checked': false, 'last_name': 'Wijoyo', 'first_name': 'Bimo', 'email_address': 'bwijoyo@updox.com', 'specialty': 'Podiatry', 'practice_name': 'Wijoyo Podiatry'},
+            {'checked': false, 'last_name': 'Rose', 'first_name': 'Nate', 'email_address': 'nrose@updox.com', 'specialty': 'Surgery', 'practice_name': 'Rose Cutters'},
+            {'checked': false, 'last_name': 'Carlson', 'first_name': 'Mike', 'email_address': 'mcarlson@updox.com', 'specialty': 'Orthopedics', 'practice_name': 'Carlson Orthopedics'},
+            {'checked': false, 'last_name': 'Witting', 'first_name': 'Mike', 'email_address': 'mwitting@updox.com', 'specialty': 'Pediatrics', 'practice_name': 'Witting’s Well Kids Pediatrics'},
+            {'checked': false, 'last_name': 'Juday', 'first_name': 'Tobin', 'email_address': 'tjuday@updox.com', 'specialty': 'General Medicine', 'practice_name': 'Juday Family Practice'}
+        ];
+       
+          
+        $scope.selectedItemChanged = function(){
+            if ($scope.orderByValue === $scope.selectedItem) {
+                $scope.sortOrder=!$scope.sortOrder; 
+            }
+            $scope.orderByValue=$scope.selectedItem;
+            $scope.selectedItem='';
+        }
+        $scope.addProvider = function(){
+            $scope.providers.unshift({'checked': false, 'last_name': $scope.last_name, 'first_name': $scope.first_name, 'email_address': $scope.email_address, 'specialty': $scope.specialty, 'practice_name': $scope.practice_name })
+            $scope.first_name='';
+            $scope.last_name='';
+            $scope.email_address='';
+            $scope.specialty='';
+            $scope.practice_name='';
+        }
+       
+        $scope.remove = function () {
+            var newDataList = [];
+            $scope.selectedAll = false;
+            angular.forEach($scope.providers, function (checked) {
+                if (!checked.checked) {
+                    newDataList.push(checked);
+                }
+            });
+            $scope.providers = newDataList;
+        };
+        
+    }])
+    </script>
+  </body>
+</html>
